@@ -1,0 +1,136 @@
+{
+  "name": "hyper-search",
+  "displayName": "HyperSearch",
+  "description": "Search Everywhere al estilo IntelliJ: un panel propio (no el Quick Open nativo) para buscar archivos, símbolos, texto, comandos y settings a la vez, con doble Shift.",
+  "version": "0.1.0",
+  "publisher": "REPLACE-WITH-YOUR-PUBLISHER-ID",
+  "license": "Apache-2.0",
+  "icon": "media/marketplace-icon.png",
+  "galleryBanner": {
+    "color": "#0a5651",
+    "theme": "dark"
+  },
+  "engines": {
+    "vscode": "^1.85.0"
+  },
+  "activationEvents": [],
+  "categories": ["Other"],
+  "keywords": [
+    "hypersearch",
+    "search everywhere",
+    "intellij",
+    "quick open",
+    "fuzzy search",
+    "go to file",
+    "go to symbol",
+    "find in files",
+    "ripgrep"
+  ],
+  "main": "./out/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "hyperSearch.open",
+        "title": "HyperSearch: Open"
+      }
+    ],
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "hyperSearch",
+          "title": "HyperSearch",
+          "icon": "media/hypersearch-icon.svg"
+        }
+      ]
+    },
+    "views": {
+      "hyperSearch": [
+        {
+          "type": "webview",
+          "id": "hyperSearch.view",
+          "name": "HyperSearch",
+          "when": "workspaceFolderCount > 0"
+        }
+      ]
+    },
+    "keybindings": [
+      {
+        "command": "hyperSearch.open",
+        "key": "shift shift",
+        "mac": "shift shift"
+      },
+      {
+        "command": "hyperSearch.open",
+        "key": "ctrl+alt+e",
+        "mac": "cmd+alt+e"
+      }
+    ],
+    "configuration": {
+      "title": "HyperSearch",
+      "properties": {
+        "hyperSearch.excludeGlobs": {
+          "type": "array",
+          "items": { "type": "string" },
+          "default": [
+            "**/node_modules/**",
+            "**/.git/**",
+            "**/dist/**",
+            "**/out/**",
+            "**/build/**",
+            "**/coverage/**",
+            "**/.next/**",
+            "**/.dart_tool/**",
+            "**/.pub-cache/**",
+            "**/ios/Pods/**",
+            "**/ios/.symlinks/**",
+            "**/DerivedData/**",
+            "**/.gradle/**",
+            "**/target/**",
+            "**/bin/**",
+            "**/obj/**",
+            "**/packages/**",
+            "**/.vs/**",
+            "**/venv/**",
+            "**/.venv/**",
+            "**/__pycache__/**",
+            "**/.tox/**",
+            "**/vendor/**",
+            "**/.bundle/**",
+            "**/.build/**"
+          ],
+          "description": "Patrones glob ADICIONALES a excluir de la búsqueda de archivos y texto (se suman a los por defecto, no los reemplazan). Los valores mostrados arriba ya son los que se aplican siempre — ver src/excludeGlobs.ts."
+        },
+        "hyperSearch.maxResults": {
+          "type": "number",
+          "default": 50,
+          "description": "Número máximo de resultados a mostrar por búsqueda."
+        }
+      }
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -w -p ./",
+    "pretest": "npm run compile",
+    "test:unit": "mocha",
+    "test:integration": "vscode-test",
+    "test": "npm run test:unit && npm run test:integration",
+    "lint": "tsc --noEmit -p ./",
+    "package": "vsce package",
+    "publish": "vsce publish"
+  },
+  "devDependencies": {
+    "@types/mocha": "^10.0.6",
+    "@types/node": "^20.11.0",
+    "@types/vscode": "^1.85.0",
+    "@vscode/test-cli": "^0.0.9",
+    "@vscode/test-electron": "^2.3.9",
+    "@vscode/vsce": "^3.9.2",
+    "mocha": "^10.3.0",
+    "typescript": "^5.4.0"
+  },
+  "dependencies": {
+    "@vscode/ripgrep": "^1.15.9"
+  }
+}

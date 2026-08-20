@@ -1,0 +1,12 @@
+.vscode/**
+.vscode-test/**
+.vscode-test.mjs
+src/**
+out/test/**
+.gitignore
+.mocharc.json
+tsconfig.json
+PUBLISHING.md
+**/*.map
+**/*.ts
+**/*.vsix
