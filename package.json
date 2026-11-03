@@ -2,9 +2,13 @@
   "name": "hyper-search",
   "displayName": "HyperSearch",
   "description": "Search Everywhere al estilo IntelliJ: un panel propio (no el Quick Open nativo) para buscar archivos, símbolos, texto, comandos y settings a la vez, con doble Shift.",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "publisher": "REPLACE-WITH-YOUR-PUBLISHER-ID",
   "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Juniorwebprogrammer/HyperSearch.git"
+  },
   "icon": "media/marketplace-icon.png",
   "galleryBanner": {
     "color": "#0a5651",
@@ -14,7 +18,9 @@
     "vscode": "^1.85.0"
   },
   "activationEvents": [],
-  "categories": ["Other"],
+  "categories": [
+    "Other"
+  ],
   "keywords": [
     "hypersearch",
     "search everywhere",
@@ -70,7 +76,9 @@
       "properties": {
         "hyperSearch.excludeGlobs": {
           "type": "array",
-          "items": { "type": "string" },
+          "items": {
+            "type": "string"
+          },
           "default": [
             "**/node_modules/**",
             "**/.git/**",
@@ -109,7 +117,7 @@
     }
   },
   "scripts": {
-    "vscode:prepublish": "npm run compile",
+    "vscode:prepublish": "npm run compile && node scripts/bundle-ripgrep-binaries.js",
     "compile": "tsc -p ./",
     "watch": "tsc -w -p ./",
     "pretest": "npm run compile",
@@ -131,6 +139,6 @@
     "typescript": "^5.4.0"
   },
   "dependencies": {
-    "@vscode/ripgrep": "^1.15.9"
+    "@vscode/ripgrep": "^1.18.0"
   }
 }

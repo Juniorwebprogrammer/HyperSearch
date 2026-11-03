@@ -10,3 +10,4 @@ PUBLISHING.md
 **/*.map
 **/*.ts
 **/*.vsix
+scripts/**

@@ -39,10 +39,10 @@ Editá `package.json`:
 
 Opcional pero recomendado antes de publicar:
 
-- **`repository`**: si el código vive en GitHub/GitLab, agregá
-  `"repository": { "type": "git", "url": "https://github.com/tu-usuario/hyper-search" }`
-  — el Marketplace muestra el link y lo usa para "Report Issue". Todavía no
-  hay uno configurado (el proyecto ni siquiera tiene git local por ahora).
+- **`repository`**: ya está — apunta a
+  `https://github.com/Juniorwebprogrammer/HyperSearch`. El Marketplace muestra
+  el link y lo usa para "Report Issue", y sin él `vsce package` frena a
+  preguntar `[y/N]`.
 - **`license`** + `LICENSE`: ya está — Apache 2.0, en `package.json` y en el
   archivo `LICENSE` de la raíz. Ojo: el `LICENSE` tiene un placeholder
   `[REEMPLAZAR CON TU NOMBRE O EL DE TU ORGANIZACIÓN]` en la línea de
@@ -106,11 +106,19 @@ npx vsce publish major   # 0.1.0 -> 1.0.0
 ## Notas
 
 - `vsce package`/`publish` corren `npm run vscode:prepublish` (→ `npm run
-  compile`) automáticamente antes de armar el paquete — no hace falta
-  compilar a mano primero.
+  compile` + `scripts/bundle-ripgrep-binaries.js`) automáticamente antes de
+  armar el paquete — no hace falta compilar a mano primero.
+- **Binarios de ripgrep**: VS Code no corre `npm install` al instalar una
+  extensión; el `.vsix` lleva tal cual lo que hay en `node_modules`, y npm
+  solo instala el ripgrep de tu propia plataforma. Por eso
+  `scripts/bundle-ripgrep-binaries.js` instala (con `--force --no-save`) los
+  de Windows, macOS y Linux antes de empaquetar, y falla si falta alguno. El
+  `.vsix` resultante pesa ~13 MB y funciona en cualquier sistema. Empaquetá
+  desde Linux o macOS: desde Windows los binarios pierden el bit de ejecución
+  (la extensión intenta corregirlo con `chmod` al arrancar, pero mejor no
+  depender de eso).
 - El `.vsix` generado queda en la raíz del proyecto; está en `.gitignore` y
   en `.vscodeignore` (no se empaqueta a sí mismo ni se versiona por
   accidente).
-- Si algún día el proyecto pasa a tener control de versiones con git, `vsce`
-  también sabe leer el `CHANGELOG.md`/tags, pero nada de esto depende de que
-  el repo tenga git — se puede empaquetar y publicar igual sin él.
+- `vsce` usa el `repository` de `package.json` para convertir los links
+  relativos del README/CHANGELOG en links a GitHub.

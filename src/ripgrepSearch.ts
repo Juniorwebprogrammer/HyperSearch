@@ -1,11 +1,11 @@
 import * as cp from "child_process";
 import * as readline from "readline";
-// @ts-ignore -- @vscode/ripgrep no trae tipos propios, solo expone `rgPath`.
-import { rgPath } from "@vscode/ripgrep";
 import { buildRipgrepExcludeArgs } from "./excludeGlobs";
 import { parseRipgrepLine, RipgrepMatch } from "./ripgrepParser";
 
 export interface RipgrepSearchOptions {
+  /** Ejecutable de ripgrep a usar (ver getRipgrepPath en ripgrepPath.ts). */
+  rgPath: string;
   cwd: string;
   query: string;
   excludeGlobs: readonly string[];
@@ -39,7 +39,7 @@ export interface RipgrepSearchOptions {
  * de todas formas se iba a descartar casi todo al recortar a maxResults.
  */
 export function searchWithRipgrep(options: RipgrepSearchOptions): Promise<RipgrepMatch[]> {
-  const { cwd, query, excludeGlobs, maxResults, onlyPaths, regex, caseSensitive, wholeWord } = options;
+  const { rgPath, cwd, query, excludeGlobs, maxResults, onlyPaths, regex, caseSensitive, wholeWord } = options;
 
   if (query.trim().length === 0) {
     return Promise.resolve([]);

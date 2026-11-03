@@ -4,6 +4,22 @@ Todos los cambios notables de esta extensión se documentan acá. El formato
 sigue más o menos [Keep a Changelog](https://keepachangelog.com/); versionado
 [semver](https://semver.org/).
 
+## [0.1.1] - 2026-11-03
+
+### Arreglado
+
+- La extensión no arrancaba en sistemas distintos al que generó el `.vsix`
+  (p.ej. Windows con un `.vsix` empaquetado en Linux): `@vscode/ripgrep` solo
+  instala el binario de la plataforma local, y al no encontrar
+  `@vscode/ripgrep-win32-x64` lanzaba un error al cargarse, tumbando la
+  activación entera. Ahora `vscode:prepublish` mete en el `.vsix` los binarios
+  de Windows, macOS y Linux (x64/arm64, más linux-arm).
+- La extensión ya no importa `@vscode/ripgrep` (solo-ESM desde la 1.18, que
+  fallaba con `ERR_REQUIRE_ESM` en VS Code con Node viejo): resuelve el binario
+  directamente, con respaldo al ripgrep que trae el propio VS Code. Si no hay
+  ninguno, solo se deshabilita la búsqueda de texto (con un aviso) en vez de
+  la extensión completa.
+
 ## [0.1.0]
 
 Primera versión pensada para publicarse en el Marketplace. Resume todo lo

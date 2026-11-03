@@ -2,6 +2,7 @@ import * as path from "path";
 import * as vscode from "vscode";
 import { fuzzyFilterSort, matchPositions } from "./fuzzyMatch";
 import { listWorkspaceFiles, toWorkspaceRelativePath } from "./fileIndex";
+import { getRipgrepPath } from "./ripgrepPath";
 import { searchWithRipgrep } from "./ripgrepSearch";
 import { searchWorkspaceSymbols, findImplementations } from "./symbolSearch";
 import { getWebviewHtml } from "./hyperSearchWebviewHtml";
@@ -342,6 +343,7 @@ export class HyperSearchViewProvider implements vscode.WebviewViewProvider {
   private latestSeq = -1;
   private commandEntriesCache: CommandEntry[] | undefined;
   private settingEntriesCache: SettingEntry[] | undefined;
+  private ripgrepMissingWarned = false;
 
   private constructor(private readonly context: vscode.ExtensionContext) {
     context.subscriptions.push(
@@ -592,6 +594,11 @@ export class HyperSearchViewProvider implements vscode.WebviewViewProvider {
     if (!folder) {
       return [];
     }
+    const rgPath = getRipgrepPath(vscode.env.appRoot);
+    if (!rgPath) {
+      this.warnRipgrepMissing();
+      return [];
+    }
     let onlyPaths: string[] | undefined;
     if (scopeUris) {
       const folderPath = folder.uri.fsPath;
@@ -602,6 +609,7 @@ export class HyperSearchViewProvider implements vscode.WebviewViewProvider {
         .map((fsPath) => toWorkspaceRelativePath(vscode.Uri.file(fsPath)));
     }
     const matches = await searchWithRipgrep({
+      rgPath,
       cwd: folder.uri.fsPath,
       query,
       excludeGlobs,
@@ -624,6 +632,22 @@ export class HyperSearchViewProvider implements vscode.WebviewViewProvider {
         path: `${m.file}:${m.line}`,
       };
     });
+  }
+
+  /**
+   * Sin ripgrep solo se deshabilita la búsqueda de texto: archivos, símbolos y
+   * acciones siguen funcionando. Avisa una vez por sesión, no en cada tecla.
+   */
+  private warnRipgrepMissing(): void {
+    if (this.ripgrepMissingWarned) {
+      return;
+    }
+    this.ripgrepMissingWarned = true;
+    vscode.window.showWarningMessage(
+      `HyperSearch: no se encontró ripgrep para ${process.platform}-${process.arch}; ` +
+        "la búsqueda de texto queda deshabilitada. Reinstalá la extensión desde un .vsix " +
+        "generado con `npm run package`."
+    );
   }
 
   private getCommandEntries(): CommandEntry[] {
