@@ -4,6 +4,18 @@ All notable changes to this extension are documented here. The format
 loosely follows [Keep a Changelog](https://keepachangelog.com/); versioning
 follows [semver](https://semver.org/).
 
+## [0.1.2] - 2026-11-03
+
+First Marketplace release.
+
+### Changed
+
+- The extension is now published under the `turinconconnect` publisher, so
+  its ID changes from `replace-with-your-publisher-id.hyper-search` to
+  `turinconconnect.hyper-search`. If you installed 0.1.1 or earlier from a
+  `.vsix`, uninstall it first: VS Code treats it as a different extension and
+  would keep both.
+
 ## [0.1.1] - 2026-11-03
 
 ### Fixed

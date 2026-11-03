@@ -3,10 +3,9 @@ import * as vscode from "vscode";
 
 suite("HyperSearch - integración", () => {
   test("la extensión se activa y registra el comando hyperSearch.open", async () => {
-    // No hardcodeamos "<publisher>.hyper-search": el publisher es un
-    // placeholder hasta que se publique de verdad (ver PUBLISHING.md) y
-    // cambia con el tiempo, así que buscamos por el "name" del package.json,
-    // que es estable.
+    // No hardcodeamos "<publisher>.hyper-search": buscamos por el "name" del
+    // package.json, que no depende del publisher (ya cambió una vez, del
+    // placeholder a turinconconnect).
     const ext = vscode.extensions.all.find((e) => e.packageJSON?.name === "hyper-search");
     assert.ok(ext, "la extensión debería estar instalada en el host de pruebas");
 

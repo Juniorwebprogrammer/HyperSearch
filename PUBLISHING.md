@@ -27,26 +27,30 @@ publicar en tu nombre:
 4. Copiá el token generado — no se puede volver a ver después de cerrar la
    pantalla.
 
+> **Ojo: los PAT globales ("All accessible organizations") de Azure DevOps se
+> retiran el 1 de diciembre de 2026.** Hasta esa fecha este camino funciona;
+> después hay que publicar con GitHub Actions + Trusted Publishing
+> (`vsce publish --oidc`, requiere `@vscode/vsce` 4.x) o con Microsoft Entra
+> ID (`vsce publish --azure-credential`). Ver la sección "Publishing
+> extensions" de la documentación oficial:
+> https://code.visualstudio.com/api/working-with-extensions/publishing-extension
+
 ## 3. Configurar el proyecto con tu publisher id
 
-Editá `package.json`:
+Ya está: `package.json` tiene `"publisher": "turinconconnect"`, así que el ID
+de la extensión es `turinconconnect.hyper-search`. Las versiones hasta la
+0.1.1 se empaquetaron con el placeholder `REPLACE-WITH-YOUR-PUBLISHER-ID`;
+quien tenga instalada una de esas tiene que desinstalarla, porque VS Code la
+trata como otra extensión distinta.
 
-```jsonc
-{
-  "publisher": "tu-publisher-id" // reemplazá el placeholder REPLACE-WITH-YOUR-PUBLISHER-ID
-}
-```
-
-Opcional pero recomendado antes de publicar:
+Además:
 
 - **`repository`**: ya está — apunta a
   `https://github.com/Juniorwebprogrammer/HyperSearch`. El Marketplace muestra
   el link y lo usa para "Report Issue", y sin él `vsce package` frena a
   preguntar `[y/N]`.
 - **`license`** + `LICENSE`: ya está — Apache 2.0, en `package.json` y en el
-  archivo `LICENSE` de la raíz. Ojo: el `LICENSE` tiene un placeholder
-  `[REEMPLAZAR CON TU NOMBRE O EL DE TU ORGANIZACIÓN]` en la línea de
-  copyright — completalo antes de publicar.
+  archivo `LICENSE` de la raíz, con copyright a nombre de Junior García.
 - **Icono del Marketplace**: ya está — `"icon": "media/marketplace-icon.png"`,
   128×128 a color (tile teal con el glyph de radar). El icono de la activity
   bar (`media/hypersearch-icon.svg`) es un archivo distinto — ese lo

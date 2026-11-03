@@ -2,8 +2,8 @@
   "name": "hyper-search",
   "displayName": "HyperSearch",
   "description": "Search Everywhere al estilo IntelliJ: un panel propio (no el Quick Open nativo) para buscar archivos, símbolos, texto, comandos y settings a la vez, con doble Shift.",
-  "version": "0.1.1",
-  "publisher": "REPLACE-WITH-YOUR-PUBLISHER-ID",
+  "version": "0.1.2",
+  "publisher": "turinconconnect",
   "license": "Apache-2.0",
   "repository": {
     "type": "git",

@@ -161,20 +161,14 @@ npm run publish    # uploads the current version to the Marketplace (requires lo
 every platform no matter which OS you build it on. Build it on Linux or macOS:
 building on Windows drops the executable bit from the binaries.
 
-Full step-by-step guide (creating a publisher, token, first publish) in
-[`PUBLISHING.md`](PUBLISHING.md). Before actually publishing, replace the
-`"publisher": "REPLACE-WITH-YOUR-PUBLISHER-ID"` placeholder in
-`package.json` with your real id — `npm run package` works fine with the
-placeholder (it's just a string used to build the local `.vsix`), but
-`vsce publish` will reject it unless it matches a real account.
+Full step-by-step guide (publisher, token, first publish) in
+[`PUBLISHING.md`](PUBLISHING.md). The extension is published under the
+`turinconconnect` publisher, so its ID is `turinconconnect.hyper-search`.
+`.vsix` builds up to 0.1.1 used a placeholder publisher: uninstall those
+before installing a newer version, or VS Code will keep both.
 
 ## Roadmap and known limitations
 
-- **Pending before a real release**: replace the placeholder `"publisher"`
-  (`REPLACE-WITH-YOUR-PUBLISHER-ID`) with a real id and fill in the name on
-  the copyright line of `LICENSE`. Everything else (Marketplace icon,
-  `LICENSE`, changelog, `repository`) is ready. See
-  [`PUBLISHING.md`](PUBLISHING.md).
 - There's no **Actions** tab entry for HyperSearch's own actions (e.g.
   changing the theme) — only existing VS Code commands/settings and those of
   its extensions.
