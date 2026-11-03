@@ -1,101 +1,107 @@
 # HyperSearch
 
-Search Everywhere de IntelliJ, para VS Code: doble tap de `Shift` abre una UI
-propia (no el Quick Open / `Ctrl+P` nativo) con pestañas **All / Files /
-Symbols / Text / Actions** para buscar archivos, símbolos, texto, comandos y
-settings a la vez — con scopes, historial, recientes, y varias cosas que el
-Quick Open / Find-in-Files nativos de VS Code no traen.
+IntelliJ's Search Everywhere, for VS Code: double-tap `Shift` to open a
+custom UI (not the native Quick Open / `Ctrl+P`) with **All / Files /
+Symbols / Text / Actions** tabs to search files, symbols, text, commands and
+settings at once — with scopes, history, recents, and several things VS
+Code's native Quick Open / Find-in-Files don't offer.
 
-> Extensión en desarrollo activo, todavía no publicada en el Marketplace.
-> Ver [Estado del proyecto](#estado-del-proyecto).
+> Under active development, not yet published on the Marketplace.
+> See [Project status](#project-status).
 
-## Tabla de contenidos
+## Table of contents
 
-- [Por qué](#por-qué)
-- [Uso](#uso)
-- [Funcionalidades que lo diferencian de VS Code](#funcionalidades-que-lo-diferencian-de-vs-code)
-- [Instalar y desarrollar](#instalar-y-desarrollar)
-- [Configuración](#configuración)
+- [Why](#why)
+- [Usage](#usage)
+- [What sets it apart from VS Code](#what-sets-it-apart-from-vs-code)
+- [Install and develop](#install-and-develop)
+- [Configuration](#configuration)
 - [Tests](#tests)
-- [Empaquetar y publicar](#empaquetar-y-publicar)
-- [Roadmap y limitaciones conocidas](#roadmap-y-limitaciones-conocidas)
-- [Estado del proyecto](#estado-del-proyecto)
-- [Contribuir](#contribuir)
-- [Licencia](#licencia)
+- [Packaging and publishing](#packaging-and-publishing)
+- [Roadmap and known limitations](#roadmap-and-known-limitations)
+- [Project status](#project-status)
+- [Contributing](#contributing)
+- [License](#license)
 
-## Por qué
+## Why
 
-VS Code separa "buscar" en varios comandos con UI y atajo distintos:
-`Ctrl+P` para archivos, `Ctrl+T`/`Ctrl+Shift+O` para símbolos,
-`Ctrl+Shift+F` para texto, `Ctrl+Shift+P` para comandos. IntelliJ los junta
-todos en un solo cuadro — **Search Everywhere** — con pestañas por categoría
-y un tab "All" que los busca a la vez. HyperSearch replica esa experiencia
-dentro de VS Code, con una UI propia (un `WebviewView` con su ícono en la
-activity bar) en vez de reutilizar el `QuickPick` nativo.
+VS Code splits "search" into several commands, each with its own UI and
+shortcut: `Ctrl+P` for files, `Ctrl+T`/`Ctrl+Shift+O` for symbols,
+`Ctrl+Shift+F` for text, `Ctrl+Shift+P` for commands. IntelliJ puts them all
+in a single box — **Search Everywhere** — with one tab per category and an
+"All" tab that searches them all at once. HyperSearch brings that experience
+to VS Code with its own UI (a `WebviewView` with its own activity bar icon)
+instead of reusing the native `QuickPick`.
 
-## Uso
+## Usage
 
-- **Doble `Shift`** (o `Ctrl+Alt+E` / `Cmd+Alt+E`) cambia la activity bar a
-  "HyperSearch" (expandiéndola si estaba colapsada) y enfoca el input.
-  También se puede abrir haciendo click en su ícono propio de la activity bar.
-- Pestaña **All** (por defecto): busca a la vez en archivos, símbolos, texto,
-  comandos y settings, agrupados con encabezado por categoría — igual que el
-  tab "All" de IntelliJ.
-- Pestañas **Files / Symbols / Text / Actions**: la misma búsqueda pero
-  enfocada en una sola categoría, sin el límite reducido de resultados por
-  sección que aplica en "All".
-- `Tab` / `Shift+Tab` (con el foco en el input) cambia de pestaña sin soltar el
-  teclado; también se puede hacer click.
-- `↑` / `↓` navega la lista, `Enter` abre el resultado seleccionado (la vista
-  se queda abierta, no se cierra al elegir).
-- `Alt+Enter` (o el botón "impl" de una fila de símbolo) busca sus
-  **implementaciones** (equivalente a "Go to Implementation" de IntelliJ) y las
-  muestra en un picker nativo.
-- `Esc` limpia el foco y vuelve al editor activo.
+- **Double `Shift`** (or `Ctrl+Alt+E` / `Cmd+Alt+E`) switches the activity
+  bar to "HyperSearch" (expanding it if it was collapsed) and focuses the
+  input. You can also open it by clicking its activity bar icon.
+- **All** tab (default): searches files, symbols, text, commands and
+  settings at once, grouped under a header per category — just like
+  IntelliJ's "All" tab.
+- **Files / Symbols / Text / Actions** tabs: the same search focused on a
+  single category, without the smaller per-section result cap that applies
+  in "All".
+- `Tab` / `Shift+Tab` (with focus in the input) switches tabs without leaving
+  the keyboard; clicking works too.
+- `↑` / `↓` moves through the list, `Enter` opens the selected result (the
+  view stays open; it doesn't close when you pick something).
+- `Alt+Enter` (or the "impl" button on a symbol row) finds its
+  **implementations** (equivalent to IntelliJ's "Go to Implementation") and
+  shows them in a native picker.
+- `Esc` clears focus and returns to the active editor.
 
-## Funcionalidades que lo diferencian de VS Code
+## What sets it apart from VS Code
 
-- **Búsqueda unificada de verdad** (tab All): un solo query golpea archivos +
-  símbolos + texto + comandos + settings a la vez. VS Code obliga a saltar
-  entre `Ctrl+P` / `Ctrl+T` / `Ctrl+Shift+F` / `Ctrl+Shift+P` por separado.
-- **Recientes al abrir con query vacío**: en vez de listar archivos
-  alfabéticamente, muestra lo último que abriste/ejecutaste (de cualquier
-  categoría, ordenado por recencia) — como el estado inicial del Search
-  Everywhere de IntelliJ. Se guarda por workspace (`workspaceState`).
-- **Historial de búsquedas**: `Ctrl+↑` / `Ctrl+↓` en el input (vacío o no)
-  recorre tus últimas queries que llevaron a abrir algo, sin pisar la
-  navegación normal de la lista con flechas simples.
-- **Tab Actions**: busca y ejecuta **comandos de VS Code** (los de cualquier
-  extensión instalada, con su categoría, como el Command Palette) y busca y
-  abre **settings** directamente en la UI de Settings — todo sin salir de
-  este mismo cuadro.
-- **Scopes de búsqueda** (selector arriba de los resultados): *Todo el
-  proyecto* / *Archivo actual* / *Pestañas abiertas* / *Cambios de git* — como
-  los scopes de IntelliJ. Aplica a Files, Symbols y Text (no a Actions).
-  "Cambios de git" usa la API pública de la extensión Git integrada.
-- **Opciones de Find-in-Files en el tab Text**: toggles `.*` (regex), `Aa`
-  (sensible a mayúsculas) y `"ab"` (palabra completa) — antes solo hacía
-  match de texto literal fijo.
+- **Truly unified search** (All tab): a single query hits files + symbols +
+  text + commands + settings at once. VS Code makes you jump between
+  `Ctrl+P` / `Ctrl+T` / `Ctrl+Shift+F` / `Ctrl+Shift+P` separately.
+- **Recents on an empty query**: instead of listing files alphabetically, it
+  shows what you last opened/ran (from any category, sorted by recency) —
+  like the initial state of IntelliJ's Search Everywhere. Stored per
+  workspace (`workspaceState`).
+- **Search history**: `Ctrl+↑` / `Ctrl+↓` in the input (empty or not) cycles
+  through your recent queries that led to opening something, without
+  interfering with plain arrow-key navigation of the list.
+- **Actions tab**: search and run **VS Code commands** (from any installed
+  extension, with their category, like the Command Palette) and search and
+  open **settings** directly in the Settings UI — all without leaving this
+  same box.
+- **Search scopes** (selector above the results): *Whole project* / *Current
+  file* / *Open tabs* / *Git changes* (shown in the UI as "Todo el proyecto",
+  "Archivo actual", "Pestañas abiertas" and "Cambios de git") — like
+  IntelliJ's scopes. Applies to Files, Symbols and Text (not Actions).
+  "Git changes" uses the public API of the built-in Git extension.
+- **Find-in-Files options in the Text tab**: `.*` (regex), `Aa` (match case)
+  and `"ab"` (whole word) toggles — it used to match fixed literal text only.
 
-## Instalar y desarrollar
+## Install and develop
 
-Todavía no está publicada en el Marketplace (ver
-[Estado del proyecto](#estado-del-proyecto)), así que por ahora se corre
-desde el código fuente:
+It isn't published on the Marketplace yet (see
+[Project status](#project-status)). To install a packaged build, grab a
+`.vsix` and run:
 
 ```bash
-git clone <url-del-repo>   # o el .zip/carpeta, si todavía no hay repo
-cd hyper-search
+code --install-extension hyper-search-<version>.vsix
+```
+
+To run it from source:
+
+```bash
+git clone https://github.com/Juniorwebprogrammer/HyperSearch.git
+cd HyperSearch
 npm install
 npm run compile
 ```
 
-Pulsá `F5` en VS Code (con esta carpeta abierta) para lanzar un Extension
-Development Host con la extensión cargada.
+Press `F5` in VS Code (with this folder open) to launch an Extension
+Development Host with the extension loaded.
 
-## Configuración
+## Configuration
 
-En `settings.json`:
+In `settings.json`:
 
 ```jsonc
 {
@@ -104,129 +110,128 @@ En `settings.json`:
 }
 ```
 
-Los excludes por defecto siempre se aplican (ver la lista completa y comentada
-por ecosistema en `src/excludeGlobs.ts`); lo que pongas aquí se añade a esa
-lista, no la reemplaza. Cubren carpetas que son solo dependencias/artefactos
-de build, nunca código propio, así que buscar ahí solo agrega ruido:
+The default excludes always apply (see the full list, commented per
+ecosystem, in [`src/excludeGlobs.ts`](src/excludeGlobs.ts)); whatever you add
+here is appended to that list, it doesn't replace it. They cover folders that
+only hold dependencies/build artifacts, never your own code, so searching
+them just adds noise:
 
-| Ecosistema | Carpetas excluidas |
+| Ecosystem | Excluded folders |
 | --- | --- |
 | Node.js | `node_modules`, `dist`, `out`, `build`, `coverage`, `.next`, `.git` |
-| Flutter / Dart / móviles | `.dart_tool`, `.pub-cache`, `ios/Pods`, `ios/.symlinks`, `DerivedData` |
+| Flutter / Dart / mobile | `.dart_tool`, `.pub-cache`, `ios/Pods`, `ios/.symlinks`, `DerivedData` |
 | Java / Kotlin / Android (Gradle) / Maven | `.gradle`, `target` |
 | .NET / C# | `bin`, `obj`, `packages`, `.vs` |
 | Python | `venv`, `.venv`, `__pycache__`, `.tox` |
-| PHP (Composer) / Go (vendorizado) / Ruby (Bundler) | `vendor`, `.bundle` |
+| PHP (Composer) / Go (vendored) / Ruby (Bundler) | `vendor`, `.bundle` |
 | Swift (SPM) | `.build` |
 
-Si tu proyecto usa alguna de estas carpetas (p.ej. `bin/`) para código propio
-y no para artefactos de build, hoy no hay forma de "desexcluirla" desde
-settings — hay que buscarla manualmente en el editor. Ver
-[Roadmap y limitaciones conocidas](#roadmap-y-limitaciones-conocidas).
+If your project uses one of these folders (e.g. `bin/`) for your own code
+rather than build artifacts, there's currently no way to "un-exclude" it from
+settings — you'll have to search it manually in the editor. See
+[Roadmap and known limitations](#roadmap-and-known-limitations).
 
 ## Tests
 
-- **Unitarios** (lógica pura: fuzzy matching, exclude globs, parser de ripgrep,
-  sin necesidad de levantar VS Code):
+- **Unit** (pure logic: fuzzy matching, exclude globs, ripgrep parser,
+  ripgrep binary lookup — no need to launch VS Code):
   ```bash
   npm run test:unit
   ```
-- **Integración** (activa la extensión real en un VS Code de pruebas,
-  descarga un VS Code headless la primera vez):
+- **Integration** (activates the real extension in a test VS Code instance;
+  downloads VS Code the first time):
   ```bash
   npm run test:integration
   ```
-- Todo junto:
+- Everything:
   ```bash
   npm test
   ```
 
-## Empaquetar y publicar
+## Packaging and publishing
 
 ```bash
-npm run package   # genera hyper-search-<version>.vsix, instalable local
-                   # con: code --install-extension hyper-search-<version>.vsix
-npm run publish    # sube la versión actual al Marketplace (necesita login previo)
+npm run package   # builds hyper-search-<version>.vsix, installable locally
+                   # with: code --install-extension hyper-search-<version>.vsix
+npm run publish    # uploads the current version to the Marketplace (requires logging in first)
 ```
 
-Guía completa paso a paso (crear publisher, token, primer publish) en
-`PUBLISHING.md`, en la raíz del proyecto (no un link clicable a propósito:
-ese archivo es solo para quien tiene el código local — no viaja en el
-`.vsix` ni tiene sentido enlazarlo sin un repositorio público todavía). Antes
-de publicar de verdad hay que reemplazar el placeholder
-`"publisher": "REPLACE-WITH-YOUR-PUBLISHER-ID"` en `package.json` por tu id
-real — `npm run package` funciona igual con el placeholder (es solo un
-string para armar el `.vsix` local), pero `vsce publish` sí lo va a rechazar
-si no coincide con una cuenta real.
+`npm run package` bundles the ripgrep binaries for Windows, macOS and Linux
+(x64/arm64, plus linux-arm) into the `.vsix`, so a single package works on
+every platform no matter which OS you build it on. Build it on Linux or macOS:
+building on Windows drops the executable bit from the binaries.
 
-## Roadmap y limitaciones conocidas
+Full step-by-step guide (creating a publisher, token, first publish) in
+[`PUBLISHING.md`](PUBLISHING.md). Before actually publishing, replace the
+`"publisher": "REPLACE-WITH-YOUR-PUBLISHER-ID"` placeholder in
+`package.json` with your real id — `npm run package` works fine with the
+placeholder (it's just a string used to build the local `.vsix`), but
+`vsce publish` will reject it unless it matches a real account.
 
-- **Pendiente antes de publicar de verdad**: reemplazar el `"publisher"`
-  placeholder (`REPLACE-WITH-YOUR-PUBLISHER-ID`) por un id real, completar el
-  nombre en la línea de copyright de `LICENSE`, y —opcional— agregar
-  `"repository"` cuando el código tenga un repo remoto. El resto (ícono de
-  Marketplace, `LICENSE`, changelog) ya está listo. Ver `PUBLISHING.md`.
-- No hay tab **Actions** para buscar/ejecutar acciones del propio HyperSearch
-  (ej. cambiar de tema) — solo comandos/settings ya existentes de VS Code y
-  sus extensiones.
-- No es un diálogo modal flotante como IntelliJ — vive fijo en su propia zona
-  del sidebar, con ícono propio en la activity bar. Es la variante más
-  cercana a "UI 100% custom" que permite la API pública de extensiones de
-  VS Code sin ocupar una pestaña de editor; un webview no puede flotar por
-  encima de toda la ventana.
-- Solo considera el **primer workspace folder** en la búsqueda de texto
-  (multi-root no soportado todavía); los scopes "Pestañas abiertas"/"Cambios
-  de git" filtran correctamente en multi-root para Files/Symbols, pero para
-  Text solo cuentan los archivos que caen dentro de ese primer folder.
-- El tab **Actions** lee comandos/settings de `package.json` de las
-  extensiones instaladas (igual que hace el Command Palette internamente):
-  no hay keybinding visible junto al comando, y el listado de comandos y
-  settings se cachea hasta que se instala/activa una extensión nueva.
-- El scope "Cambios de git" depende de la extensión Git integrada de VS Code
-  (`vscode.git`) y de su API interna no tipada públicamente; si esa extensión
-  está deshabilitada, el scope simplemente no devuelve archivos.
-- Los excludes por defecto son fijos (una lista hardcodeada en
-  `src/excludeGlobs.ts`): `hyperSearch.excludeGlobs` solo permite **añadir**
-  más, no remover uno de los por defecto (p.ej. si tu proyecto usa `bin/`
-  para código propio en vez de artefactos de build). Habría que agregar
-  soporte a un prefijo tipo `!patrón` para "des-excluir" — no implementado
-  todavía.
-- El resaltado de coincidencias en la lista usa un match "greedy" simple
-  (`matchPositions` en `fuzzyMatch.ts`), independiente del scoring real
-  (`fuzzyScore`) que decide el orden — es solo una guía visual, puede no
-  coincidir exactamente con qué letras "pesaron más" en el ranking.
-- El binding `shift shift` depende de que VS Code interprete correctamente el
-  chord de un mismo modificador repetido; si choca con otro binding tuyo, usa
-  el fallback `Ctrl+Alt+E` / `Cmd+Alt+E` o remapea el comando
-  `hyperSearch.open` en tus keybindings.
+## Roadmap and known limitations
 
-## Estado del proyecto
+- **Pending before a real release**: replace the placeholder `"publisher"`
+  (`REPLACE-WITH-YOUR-PUBLISHER-ID`) with a real id and fill in the name on
+  the copyright line of `LICENSE`. Everything else (Marketplace icon,
+  `LICENSE`, changelog, `repository`) is ready. See
+  [`PUBLISHING.md`](PUBLISHING.md).
+- There's no **Actions** tab entry for HyperSearch's own actions (e.g.
+  changing the theme) — only existing VS Code commands/settings and those of
+  its extensions.
+- It's not a floating modal dialog like IntelliJ's — it lives docked in its
+  own sidebar area, with its own activity bar icon. That's the closest to a
+  "100% custom UI" that VS Code's public extension API allows without taking
+  up an editor tab; a webview can't float above the whole window.
+- Text search only considers the **first workspace folder** (multi-root
+  isn't supported yet); the "Open tabs"/"Git changes" scopes filter
+  correctly in multi-root for Files/Symbols, but for Text only files inside
+  that first folder count.
+- The **Actions** tab reads commands/settings from the `package.json` of
+  installed extensions (just like the Command Palette does internally): no
+  keybinding is shown next to the command, and the command and settings list
+  is cached until a new extension is installed/activated.
+- The "Git changes" scope depends on VS Code's built-in Git extension
+  (`vscode.git`) and its internal, not publicly typed API; if that extension
+  is disabled, the scope simply returns no files.
+- The default excludes are fixed (a hardcoded list in
+  [`src/excludeGlobs.ts`](src/excludeGlobs.ts)): `hyperSearch.excludeGlobs`
+  only lets you **add** more, not remove a default one (e.g. if your project
+  uses `bin/` for your own code instead of build artifacts). Supporting a
+  `!pattern`-style prefix to "un-exclude" would be needed — not implemented
+  yet.
+- Match highlighting in the list uses a simple "greedy" match
+  (`matchPositions` in `fuzzyMatch.ts`), independent from the actual scoring
+  (`fuzzyScore`) that decides the order — it's only a visual hint and may not
+  exactly match which letters "weighed more" in the ranking.
+- The `shift shift` binding relies on VS Code correctly interpreting a chord
+  of the same repeated modifier; if it clashes with another binding of
+  yours, use the `Ctrl+Alt+E` / `Cmd+Alt+E` fallback or remap the
+  `hyperSearch.open` command in your keybindings.
 
-Desarrollo activo, sin publicar todavía. Nació en agosto de 2026 como una
-extensión propia inspirada en Search Everywhere de IntelliJ, se llamó
-"Search Everywhere" durante buena parte del desarrollo (todavía puede
-aparecer así en capturas o issues viejos) y pasó a llamarse **HyperSearch**.
-Ver `CHANGELOG.md` para el detalle versión por versión (no es un link
-clicable a propósito: sin un `"repository"` en `package.json`, `vsce` no
-puede reescribir links relativos al renderizar el README en el Marketplace —
-se vuelve a habilitar como link en cuanto haya un repo).
+## Project status
 
-## Contribuir
+Active development, not published yet. It started in August 2026 as a
+custom extension inspired by IntelliJ's Search Everywhere, was called
+"Search Everywhere" for much of its development (it may still show up that
+way in old screenshots or issues) and was renamed **HyperSearch**. See
+[`CHANGELOG.md`](CHANGELOG.md) for version-by-version details.
 
-No hay todavía un flujo formal de PRs/issues (el proyecto no tiene repo
-remoto por el momento), pero la idea es la de cualquier extensión de VS Code
-open source:
+## Contributing
 
-1. `npm install`, `npm run compile`, `F5` para probar en un Extension
+Issues and pull requests are welcome at
+[github.com/Juniorwebprogrammer/HyperSearch](https://github.com/Juniorwebprogrammer/HyperSearch).
+The workflow is the same as any open-source VS Code extension:
+
+1. `npm install`, `npm run compile`, `F5` to try it in an Extension
    Development Host.
-2. `npm test` antes de mandar cualquier cambio (unitarios + integración).
-3. Si agregás una carpeta de dependencias/build nueva a excluir por defecto
-   en `src/excludeGlobs.ts`, recordá sincronizar el `default` de
-   `hyperSearch.excludeGlobs` en `package.json` (son la misma lista,
-   duplicada a mano porque `package.json` es JSON estático).
-4. Una entrada nueva en `CHANGELOG.md` por cada cambio de comportamiento
-   visible para quien usa la extensión.
+2. `npm test` before submitting any change (unit + integration).
+3. If you add a new dependency/build folder to exclude by default in
+   [`src/excludeGlobs.ts`](src/excludeGlobs.ts), remember to sync the
+   `default` of `hyperSearch.excludeGlobs` in `package.json` (they're the
+   same list, duplicated by hand because `package.json` is static JSON).
+4. Add a new entry to [`CHANGELOG.md`](CHANGELOG.md) for every change in
+   behavior visible to users of the extension.
 
-## Licencia
+## License
 
-Apache License 2.0 — texto completo en `LICENSE`, en la raíz del proyecto.
+Apache License 2.0 — full text in [`LICENSE`](LICENSE).
