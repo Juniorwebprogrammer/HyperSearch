@@ -6,15 +6,17 @@ follows [semver](https://semver.org/).
 
 ## [0.1.2] - 2026-11-03
 
-First Marketplace release.
+First Marketplace update since 0.1.0: it ships the 0.1.1 fixes (0.1.1 was
+only released as a `.vsix` on GitHub).
 
 ### Changed
 
-- The extension is now published under the `turinconconnect` publisher, so
-  its ID changes from `replace-with-your-publisher-id.hyper-search` to
-  `turinconconnect.hyper-search`. If you installed 0.1.1 or earlier from a
-  `.vsix`, uninstall it first: VS Code treats it as a different extension and
-  would keep both.
+- `.vsix` builds now use the Marketplace publisher, `Turincnweb`, so the
+  extension ID is `Turincnweb.hyper-search` everywhere. The 0.1.1 `.vsix` on
+  GitHub was built with a placeholder publisher
+  (`replace-with-your-publisher-id.hyper-search`); if you installed it,
+  uninstall it first: VS Code treats it as a different extension and would
+  keep both. Marketplace users of 0.1.0 get this as a regular update.
 
 ## [0.1.1] - 2026-11-03
 

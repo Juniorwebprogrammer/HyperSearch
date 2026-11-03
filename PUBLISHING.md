@@ -37,11 +37,20 @@ publicar en tu nombre:
 
 ## 3. Configurar el proyecto con tu publisher id
 
-Ya está: `package.json` tiene `"publisher": "turinconconnect"`, así que el ID
-de la extensión es `turinconconnect.hyper-search`. Las versiones hasta la
-0.1.1 se empaquetaron con el placeholder `REPLACE-WITH-YOUR-PUBLISHER-ID`;
-quien tenga instalada una de esas tiene que desinstalarla, porque VS Code la
-trata como otra extensión distinta.
+Ya está: `package.json` tiene `"publisher": "Turincnweb"` (display name "Tu
+rincón web"), el mismo publisher con el que se publicó la 0.1.0 en el
+Marketplace, así que el ID de la extensión es `Turincnweb.hyper-search`. El
+`.vsix` 0.1.1 de GitHub se empaquetó con el placeholder
+`REPLACE-WITH-YOUR-PUBLISHER-ID`; quien lo tenga instalado tiene que
+desinstalarlo, porque VS Code lo trata como otra extensión distinta.
+
+> **Publicar sin token**: en vez de los pasos 2, 4 y 6, se puede subir el
+> `.vsix` desde la web. Entrá a
+> https://marketplace.visualstudio.com/manage/publishers/turincnweb, en la
+> fila de HyperSearch abrí el menú `···` → **Update** y arrastrá el `.vsix`
+> generado con `npm run package`. La versión tiene que ser mayor que la
+> publicada y el publisher del `.vsix` tiene que ser `Turincnweb`. Sigue
+> funcionando después del retiro de los PAT globales.
 
 Además:
 

@@ -6,7 +6,8 @@ Symbols / Text / Actions** tabs to search files, symbols, text, commands and
 settings at once — with scopes, history, recents, and several things VS
 Code's native Quick Open / Find-in-Files don't offer.
 
-> Under active development, not yet published on the Marketplace.
+> Under active development. Available on the
+> [VS Code Marketplace](https://marketplace.visualstudio.com/items?itemName=Turincnweb.hyper-search).
 > See [Project status](#project-status).
 
 ## Table of contents
@@ -79,9 +80,16 @@ instead of reusing the native `QuickPick`.
 
 ## Install and develop
 
-It isn't published on the Marketplace yet (see
-[Project status](#project-status)). To install a packaged build, grab a
-`.vsix` and run:
+Install it from the
+[VS Code Marketplace](https://marketplace.visualstudio.com/items?itemName=Turincnweb.hyper-search)
+(search for "HyperSearch" in the Extensions view), or from the command line:
+
+```bash
+code --install-extension Turincnweb.hyper-search
+```
+
+Each version's `.vsix` is also attached to the
+[GitHub releases](https://github.com/Juniorwebprogrammer/HyperSearch/releases):
 
 ```bash
 code --install-extension hyper-search-<version>.vsix
@@ -161,11 +169,11 @@ npm run publish    # uploads the current version to the Marketplace (requires lo
 every platform no matter which OS you build it on. Build it on Linux or macOS:
 building on Windows drops the executable bit from the binaries.
 
-Full step-by-step guide (publisher, token, first publish) in
+Full step-by-step guide (publisher, token, publishing) in
 [`PUBLISHING.md`](PUBLISHING.md). The extension is published under the
-`turinconconnect` publisher, so its ID is `turinconconnect.hyper-search`.
-`.vsix` builds up to 0.1.1 used a placeholder publisher: uninstall those
-before installing a newer version, or VS Code will keep both.
+`Turincnweb` publisher, so its ID is `Turincnweb.hyper-search`. The 0.1.1
+`.vsix` on GitHub used a placeholder publisher: uninstall it before
+installing a newer version, or VS Code will keep both.
 
 ## Roadmap and known limitations
 
@@ -204,7 +212,7 @@ before installing a newer version, or VS Code will keep both.
 
 ## Project status
 
-Active development, not published yet. It started in August 2026 as a
+Active development, published on the Marketplace since 0.1.0. It started in August 2026 as a
 custom extension inspired by IntelliJ's Search Everywhere, was called
 "Search Everywhere" for much of its development (it may still show up that
 way in old screenshots or issues) and was renamed **HyperSearch**. See
